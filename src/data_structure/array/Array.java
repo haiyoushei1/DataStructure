@@ -96,15 +96,47 @@ public class Array {
         }
         return nums;
     }
-}
-
-/*
+    /*
 归并排序：
 时间复杂度：O(nlogn)
 算法思路：很典型的分治思路
 1、将数组从中间分开，不断的递归，直到每个区间只有一个元素  --分
 2、在一个区间将左右两侧的元素进行归并操作，哪个小就进入数组  --治
  */
-    public int[] mergeSort(int[] nums){
-
+    public int[] mergeSort(int[] nums, int begin, int end){
+        int mid = (begin + end) / 2;
+        if(nums == null || begin >= mid)
+            return null;
+        mergeSort(nums, begin, mid);  // 对左边进行归并排序
+        mergeSort(nums, mid, end);
+        merge(nums, begin, mid, end);  // 对两边进行归并
+        return nums;
     }
+    public void merge(int[] nums, int begin,int mid,  int end){
+        int[] temp = new int[end - begin];
+        int i = begin;
+        int j = mid;
+        int k = 0;
+        while(i < mid && j < end){
+            if(nums[i] <= nums[j]){
+                temp[k++] = nums[i++];
+            }else{
+                temp[k++] = nums[j++];
+            }
+        }
+        if(i < mid){
+            while(i < mid){
+                temp[k++] = nums[i++];
+            }
+        }
+        if(j < mid){
+            while(j < mid){
+                temp[k++] = nums[j++];
+            }
+        }
+        for(k = 0; begin < end; begin++, k++){
+            nums[begin] = temp[k];
+        }
+    }
+}
+
